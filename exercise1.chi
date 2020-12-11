@@ -32,6 +32,3 @@ model M():
   chan tote a;
   run Generator(a), Exit(a)
 end
-
-blablabla
-
