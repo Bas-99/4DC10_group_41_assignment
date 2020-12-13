@@ -6,34 +6,34 @@ const real  arrive = 70.0,             # inter arrival time of requests
       int   number_of_orders = 10000;  # the number of orders to process
 
 proc Generator(chan! tote a):
-  .....;
-  .....;
+  dist int column = uniform(1, depth+1);
+  dist real julliemam = exponential(arrive);
   tote x;
   while true:
     x.entrytime = time;
-    x.column = .....;
+    x.column = sample column;
     a!x;
-    delay .....;
+    delay sample julliemam;
   end
 end
 
 proc Demand_Buffer(chan? tote a; chan! tote b):
   tote x;
   list tote xs;
-  .....
-  .....
-  .....
-  .....
-  .....
+  while true:
+    select
+        a?x: xs = xs + [x]
+    alt
+        not empty(xs), b!xs[0]: xs = xs[1:]
+    end
+  end
 end
 
 proc Vehicle(chan? tote a; chan! tote b):
   tote x;
-  .....
-  .....
-  .....
-  .....
-  .....
+  while true:
+    a?x; delay 40.0; b!x;
+  end
 end
 
 proc Exit(chan? tote a):
