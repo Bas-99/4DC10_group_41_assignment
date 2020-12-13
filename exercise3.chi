@@ -1,6 +1,8 @@
 type tote = tuple(real entrytime;
                   int  column);
 
+type vehicle_item = tuple(tote pid; timer t);
+
 const real  arrive = 70.0,             # inter arrival time of requests
       int   depth  = 55,               # the number of columns
       int   number_of_orders = 10000;  # the number of orders to process
@@ -31,9 +33,15 @@ end
 
 proc Vehicle(chan? tote a; chan! tote b):
   tote x;
+  list vehicle_item xs;
+
   while true:
-    a?x; delay 40.0; b!x;
-  end
+        select size(xs)<1, a?x:
+            xs = xs + [(x,timer(40.0))];
+        alt size(xs)>0 and ready(xs[0].t), b!xs[0].pid:
+            xs=xs[1:]
+        end;
+    end
 end
 
 proc Exit(chan? tote a):
