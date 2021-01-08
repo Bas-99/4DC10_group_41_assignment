@@ -10,34 +10,47 @@ const real arrive = 70.0,             # inter arrival time of requests
       real av = 1.0;                  # acceleration/deceleration of the vehicle
 
 proc Generator(chan! tote a):
-  .....;
-  .....;
+  dist int column = uniform(1, depth+1);
+  dist real julliemam = exponential(arrive);
   tote x;
   while true:
     x.entrytime = time;
-    x.column = .....;
+    x.column = sample column;
     a!x;
-    delay .....;
+    delay sample julliemam;
   end
 end
 
 proc Demand_Buffer(chan? tote a; chan! tote b):
   tote x;
   list tote xs;
-  .....
-  .....
-  .....
-  .....
-  .....
+  while true:
+    select
+        a?x: xs = xs + [x]
+    alt
+        not empty(xs), b!xs[0]: xs = xs[1:]
+    end
+  end
 end
 
 proc Vehicle(chan? tote a; chan! tote b):
   tote x;
-  .....
-  .....
-  .....
-  .....
-  .....
+  real distance;
+  real crit_dist = 2.25;
+  real t_vehicle;
+  while true:
+    a?x;
+    distance = x.column *dv;
+    if distance <= crit_dist:
+        t_vehicle = 2*(distance/av)^(1/2)+2*lv;
+        delay t_vehicle;
+        b!x;
+    else:
+        t_vehicle = 2*(vmaxv/av+(distance-(vmaxv^2/av))/vmaxv) + 2*lv;
+        delay t_vehicle;
+        b!x;
+    end
+   end
 end
 
 proc Exit(chan? tote a):
