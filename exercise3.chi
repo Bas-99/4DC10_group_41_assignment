@@ -36,11 +36,12 @@ proc Vehicle(chan? tote a; chan! tote b):
   list vehicle_item xs;
 
   while true:
-        select size(xs)<1, a?x:
-            xs = xs + [(x,timer(40.0))];
-        alt size(xs)>0 and ready(xs[0].t), b!xs[0].pid:
-            xs=xs[1:]
-        end;
+#         select size(xs)<1, a?x:
+#             xs = xs + [(x,timer(40.0))];
+#         alt size(xs)>0 and ready(xs[0].t), b!xs[0].pid:
+#             xs=xs[1:]
+#         end;
+        a?x; delay 40.0; b!x;
     end
 end
 
