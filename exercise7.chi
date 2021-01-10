@@ -31,18 +31,29 @@ proc Buffer(list(Level) chan? tote a; chan! tote b; chan! int c):
         pass
     alt
       not empty(xs), b!xs[0]:
-        .....
+         xs = xs[1:];
+         if n[0] > 0:
+            n[0] = 0;
+         elif n[1] > 0:
+            n[1] = 0;
+         end
     end
   end
 end
 
 proc Lift(chan? tote a; chan? int b; chan! tote c):
   tote x;
-  .....
-  .....
-  .....
-  .....
-  .....
+  int xs;
+  b?xs;
+  while true:
+    delay(23.0);
+    delay(ll);
+    a?x;
+    delay(23.0);
+    delay(ll);
+    c!x;
+    b?xs;
+  end
 end
 
 proc Exit(chan? tote a):
