@@ -24,10 +24,10 @@ proc Lift(chan? tote a; chan? int b; chan! tote c):
     delay(23.0);
     delay(ll);
     a?x;
-    b?tier;
     delay(23.0);
     delay(ll);
     c!x;
+    b?tier;
   end
 end
 
