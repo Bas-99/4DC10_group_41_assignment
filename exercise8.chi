@@ -34,18 +34,35 @@ proc Buffer(list(Level) chan? tote a; chan! tote b; chan! int c):
         pass
     alt
       not empty(xs), b!xs[0]:
-        .....
+        if xs[0].tier == 0:
+            n[0] = 0;
+         elif xs[0].tier == 1:
+            n[1] = 0;
+         end
+         xs = xs[1:];
     end
   end
 end
 
 proc Lift(chan? tote a; chan? int b; chan! tote c):
   tote x;
-  .....
-  .....
-  .....
-  .....
-  .....
+  int xs;
+  real  t;
+  int crit_tier = 3;
+  b?xs;
+  while true:
+        if xs > crit_tier: t = (vmaxl/al+(dl*(xs+1)-(vmaxl^2/al))/vmaxl);
+        else: t = sqrt((dl*(xs+1))/(al));
+        end
+
+    delay(t);
+    delay(ll);
+    a?x;
+    delay(t);
+    delay(ll);
+    c!x;
+    b?xs;
+  end
 end
 
 proc Exit(chan? tote a):
